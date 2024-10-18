@@ -1,0 +1,14 @@
+v0.3.0.1 - Fix cc#010, code cleanup
+v0.3.0.2 - Fix cc#011, balancing improvements, code cleanup
+v0.3.1.0 - Create gamesaves using file I/O, reduce difficulties by one level
+v0.3.1.1 - Bug fixes, balancing, etc
+v0.3.1.2 - If needed
+v0.3.2.0 - Armor upgrades
+v0.3.2.1 - Bug fixes, balancing, etc
+v0.3.2.2 - If needed
+v0.3.3.0 - Skill tree
+v0.3.3.1 - Bug fixes, balancing, etc
+v0.3.3.2 - If needed
+v0.3.4.0 - If needed: more skills/weapons/armor/waves/enemies/etc
+v0.3.4.1 - If needed
+v0.4.0.0 - 

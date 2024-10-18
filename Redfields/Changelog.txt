@@ -1,0 +1,57 @@
+Redfields - v0.3.0.1
+
+- 
+
+Redfields - v0.3.0.0
+
+- Added lastMove variable to character class to distinguish player moves.
+- Renamed basic attack to swing attack.
+- Added stab attack.
+- Added knockback variable.
+- Added knockback integration to attacks based on speed.
+- Added weight variable to affect knockback.
+- Integrated weight values to each enemy type.
+- Cut damage from stab attack to end halfway through swing.
+- Knockback affected by critical hits.
+- Knockback split between enemies hit.
+- Cleaned up player attack code.
+- Added force variable to characters to affect knockback.
+- Integrated force variable to player level system.
+- Localized common enemy stat multipliers.
+- Made weight affected by game difficulty.
+- Changed weight variable to be accessible to character class.
+- Player can receive knockback from enemies.
+- Integrated knockback resistance to player level system.
+- Integrated force variable to each enemy type.
+- Made force affected by game difficulty.
+- Improved knockback vectors.
+- Fixed cc#002: Knockback only affects player when the player is moving.
+- Added longer cooldown to stab attacks (1.5x).
+- Added name displays to all enemy types.
+- Adjusted enemy name displays based on character count.
+- Fixed cc#003: Player weight is set as 3 on game start, but its base is 4 in the level system.
+- Adjusted player sword positions.
+- Added feature to restart game after dying by pressing spacebar. Everything but experience is reset.
+- Added totem for shop.
+- Made totem interactive to open shop gui.
+- Added shop gui.
+- Added upgrade class.
+- Added gilded sword texture.
+- Added upgrade gui textures and implimentation.
+- Added stats for upgrades when hovering over them.
+- Improved code for upgrades and gui.
+- Fixed cc#004: Player has no damage or cooldown.
+- Fixed cc#005: Game crashes when opening store from retrieving player data.
+- Fixed cc#006: Game crashes when opening store from unknown upgrades.
+- Fixed cc#007: Game will not start due to upgrade constructor.
+- Fixed cc#008: Player health resets to max when damaged.
+- Added purchasability to upgrades.
+- Added stats with new gilded sword.
+- Implemented gilded sword texture.
+- Nerfed level system effects.
+- Renamed basic sword as rusty sword.
+- Added iron and steel swords.
+- Gilded sword is now sword 4.
+- Coin drop chance multiplier increased from 50 to 60.
+- Fixed cc#009: Purchasing upgrade subtracts more gold than what you have.
+- Added skill points as new currency for skills.
