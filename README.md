@@ -59,8 +59,13 @@ Get good B-)
 
 ## Version Naming Scheme
 This is how the version system is matrixed:
+
 vA.B.C.D      e.g:  v0.3.1.2
+
 A: 0 - early access, 1 - full release
+
 B: Major update
+
 C: Minor update
+
 D: Hotfix/patch
