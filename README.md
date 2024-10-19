@@ -55,4 +55,12 @@ To choose the difficulty at the beginning of the game, press the number that cor
 Press spacebar to start the next wave.
 
 ### Strategies
-If you can't beat the first boss on easy: skill issue.
+Get good B-)
+
+## Version Naming Scheme
+This is how the version system is matrixed:
+vA.B.C.D      e.g:  v0.3.1.2
+A: 0 - early access, 1 - full release
+B: Major update
+C: Minor update
+D: Hotfix/patch
