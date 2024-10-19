@@ -41,7 +41,7 @@ How the difficulties compare when using the goblin's health as a reference:
 
 Easy: 2
 
-Medium: 3
+Normal: 3
 
 Hard: 4
 
