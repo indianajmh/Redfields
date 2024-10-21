@@ -10,4 +10,4 @@ Launch "primary.exe" in the Redfields folder, which will launch the game.
 Please post any bugs or difficulties you experienced and I will do my best to solve them.
 
 ## How to Play
-Refer to the wiki.
+Refer to the wiki: https://github.com/indianajmh/Redfields/wiki/Redfields
