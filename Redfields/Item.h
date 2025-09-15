@@ -25,10 +25,10 @@ public:
     void setTag(string nam) { tag = nam; }
 private:
     // Item Variables
-    Texture2D texture{};
-    Vector2 worldPos{};
-    float scale = 1.f;
-    string tag{};
+    Texture2D texture{};    // item texture
+    Vector2 worldPos{};     // item position in world
+    float scale = 1.f;      // item texture scale
+    string tag{};           // item type
 };
 
 #endif

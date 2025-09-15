@@ -1,14 +1,26 @@
-v0.3.0.1 - Fix cc#010, code cleanup
-v0.3.0.2 - Fix cc#011, balancing improvements, code cleanup
-v0.3.1.0 - Create gamesaves using file I/O, reduce difficulties by one level
-v0.3.1.1 - Bug fixes, balancing, etc
+definition:
+more game extent = more skills/weapons/armor/waves/enemies/etc
+stability = bug fixes, balancing, etc
+
+v0.3.0.1 - Q3 2025 - Fix cc#011, code cleanup, other bug fixes
+v0.3.0.2 - Q4 2025 - Fix cc#010, shop class, balancing improvements, code cleanup, other bug fixes
+v0.3.1.0 - Q2 2026 - Create gamesaves using file I/O, game class
+v0.3.1.1 - Q3 2026 - Code cleanup, stability
 v0.3.1.2 - If needed
 v0.3.2.0 - Armor upgrades
-v0.3.2.1 - Bug fixes, balancing, etc
+v0.3.2.1 - Stability
 v0.3.2.2 - If needed
 v0.3.3.0 - Skill tree
-v0.3.3.1 - Bug fixes, balancing, etc
+v0.3.3.1 - Stability
 v0.3.3.2 - If needed
-v0.3.4.0 - If needed: more skills/weapons/armor/waves/enemies/etc
-v0.3.4.1 - If needed
-v0.4.0.0 - 
+v0.3.4.0 - New easiest difficulty for babies (new difficulty and shifting difficulties for inexperienced players), gameplay balancing
+v0.3.4.1 - Stability
+v0.3.4.2 - If needed
+v0.4.0.0 - GUI upgrade, launch options, title screen, options, pause menu, multiple game saves (maybe infinite w/ scrolling), 
+                loading screen
+v0.4.1.0 - Controller support and GUI stability
+v0.4.2.0 - Stars for beating each difficulty
+v0.4.3.0 - Scroll bar for infinite game saves (if not already there)
+v0.4.4.0 - More game extent
+v0.5.0.0 - Revamped textures, improved animations, sounds, music
+v0.6.0.0 - Demon/blood mode

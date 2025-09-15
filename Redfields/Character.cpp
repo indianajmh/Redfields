@@ -9,14 +9,14 @@ using namespace std;
 
 // Character Constructor
 Character::Character(int winWidth, int winHeight) :
-windowWidth(winWidth),
-windowHeight(winHeight)
+        windowWidth(winWidth),
+        windowHeight(winHeight)
 {
-    // Simplifying Player Variables
+    // Player Texture Dimensions
     width = texture.width / maxFrames;
     height = texture.height;
 
-    // Stats
+    // Player Stats
     cooldown = 14.f;
     maxHealth = 10.f;
     health = maxHealth;
@@ -28,6 +28,7 @@ windowHeight(winHeight)
     critChance = 5.f;
     critMult = 1.5;
 
+    // Equipment
     swordLevel = 0;
     armorLevel = 0;
 }
@@ -37,27 +38,15 @@ Vector2 Character::getScreenPos()
 {
     return Vector2
     {
+        // x and y position on screen based on window dimensions, player texture dimensions, and scale
         static_cast<float>(windowWidth) / 2.0f - scale * (0.5f * width),
         static_cast<float>(windowHeight) / 2.0f - scale * (0.5f * height)
     };
 }
 
-// Ticks as in passing of time (like minecraft) 
-void Character::tick(float deltaTime)
+// Sword Types
+void Character::applySword()
 {
-    // Is Alive
-    if (!getAlive()) return;
-
-    // Calling Base Character Functions
-    BaseCharacter::tick(deltaTime);
-    
-    // Moving Map
-    if (IsKeyDown(KEY_A)) velocity.x += 1.0;
-    if (IsKeyDown(KEY_D)) velocity.x -= 1.0;
-    if (IsKeyDown(KEY_W)) velocity.y += 1.0;
-    if (IsKeyDown(KEY_S)) velocity.y -= 1.0;
-
-    // Swords
     if (swordLevel == 0)    // Rusty Sword
     {
         weapon = weapon0;
@@ -81,7 +70,6 @@ void Character::tick(float deltaTime)
         baseCooldownS = 13.f;
         baseCritMultS = 1.5;
         baseCritChanceS = 6.f;
-
     }
     if (swordLevel == 2)    // Steel Sword
     {
@@ -94,7 +82,6 @@ void Character::tick(float deltaTime)
         baseCooldownS = 13.f;
         baseCritMultS = 1.6;
         baseCritChanceS = 6.f;
-
     }
     if (swordLevel == 3)    // Gilded Sword
     {
@@ -107,9 +94,12 @@ void Character::tick(float deltaTime)
         baseCooldownS = 12.f;
         baseCritMultS = 1.5;
         baseCritChanceS = 7.f;
-
     }
-    // Armor
+}
+
+// Armor Types
+void Character::applyArmor()
+{
     if (armorLevel == 0)    // Basic Armor
     {
         baseSpeedA = 5.f;
@@ -121,8 +111,11 @@ void Character::tick(float deltaTime)
         baseCritMultA = 0.f;
         baseCritChanceA = 0.f;
     }
+}
 
-    // Equipment Stats
+// Combining Equipment Stats
+void Character::applyEquipment()
+{
     baseSpeed = baseSpeedS + baseSpeedA;
     baseWeight = baseWeightS + baseWeightA;
     cleanDamage = cleanDamageS + cleanDamageA;
@@ -131,33 +124,77 @@ void Character::tick(float deltaTime)
     baseCooldown = baseCooldownS + baseCooldownA;
     baseCritMult = baseCritMultS + baseCritMultA;
     baseCritChance = baseCritChanceS + baseCritChanceA;
+}
 
-    // Level Buffs
-    cooldown = baseCooldown - (level - 1.f)*0.01;
-    maxHealth = baseMaxHealth + (level - 1.f);
-    baseDamage = cleanDamage + (level - 1.f)*0.05;
-    force = baseForce + (level - 1.f)*0.02;
-    weight = baseWeight + (level - 1.f)*0.2;
-    speed = baseSpeed + (level - 1.f)*0.05;
-    critChance = baseCritChance + (level - 1.f);
-    critMult = baseCritMult + (level - 1.f)*0.05;
-    damage = baseDamage;
+// Applying Level Buffs
+void Character::applyLevel()
+{
+    cooldown = baseCooldown - (level - 1)*0.01;     // Decreases by 0.01 every level
+    maxHealth = baseMaxHealth + (level - 1);        // Increases by 1 every level
+    baseDamage = cleanDamage + (level - 1)*0.05;    // Increases by 0.05 every level
+    force = baseForce + (level - 1)*0.02;           // Increases by 0.02 every level
+    weight = baseWeight + (level - 1)*0.2;          // Increases by 0.2 every level
+    speed = baseSpeed + (level - 1)*0.05;           // Increases by 0.05 every level
+    critChance = baseCritChance + (level - 1);      // Increases by 1% chance every level
+    critMult = baseCritMult + (level - 1)*0.05;     // Increases by 0.05x every level
+    if (!instaKill) damage = baseDamage;            // Update damage if instakill is not on
+}
 
-    // Level System
-    xpReq = 20.f * pow(1.6, level - 1.f);
-    if (xp >= xpReq)    // Level Up
+// Level Up
+void Character::levelUp()
+{
+    if (xp >= xpReq)    // Meets XP requirement to level up
     {
         level++;
         skillPoints++;
-        xp -= xpReq;
-        maxHealth = baseMaxHealth + (level - 1.f);
-        health = maxHealth;
+        xp -= xpReq;    // Spend XP
+        health = maxHealth + 1;                             // Refill health after level up
     }
+}
 
-    // Sword Origin
-    Vector2 origin{};
-    Vector2 offset{};
-    float rotation{};
+void Character::displayHP()
+{
+    // Player XP GUI
+    DrawRectangle(29.f, 61.f, xp / xpReq * 20.f * maxHealth + 2.f * (xp/xp), 15.f, BLACK);  // XP bar background
+    DrawRectangle(30.f, 61.f, xp / xpReq * 20.f * maxHealth, 14.f, BLUE);                   // XP bar
+    DrawText(std::to_string(level).c_str(), 12.f, 32.f, 30, {0, 0, 255, 255});              // Level number text
+    DrawText(std::to_string(gold).c_str(), 50.f, 1.f, 30, GOLD);                            // Gold supply text
+
+    // Player Health GUI
+    DrawRectangle(29.f, 29.f, 20.f * maxHealth + 2.f, 32.f, BLACK); // Health bar background
+    DrawRectangle(30.f, 30.f, 20.f * maxHealth, 30.f, RED);         // Health bar midground/amount of damage taken
+    DrawRectangle(30.f, 30.f, 20.f * health, 30.f, GREEN);          // Health bar
+}
+
+// Ticks as in passing of time (like minecraft) 
+void Character::tick(float deltaTime)
+{
+    // Is Alive
+    if (!getAlive()) return;
+
+    // Calling Base Character Functions
+    BaseCharacter::tick(deltaTime);
+    
+    // Moving Map
+    if (IsKeyDown(KEY_A)) velocity.x += 1.0;    // Left
+    if (IsKeyDown(KEY_D)) velocity.x -= 1.0;    // Right
+    if (IsKeyDown(KEY_W)) velocity.y += 1.0;    // Up
+    if (IsKeyDown(KEY_S)) velocity.y -= 1.0;    // Down
+
+    // Applying Stats
+    applySword();
+    applyArmor();
+    applyEquipment();
+
+    // Level System
+    xpReq = round(20.f * pow(1.6, level - 1));  // Setting XP requirement
+    levelUp();
+    applyLevel();
+
+    // Sword Drawing
+    Vector2 origin{};   // Origin of sword texture
+    Vector2 offset{};   // Offset of sword from player
+    float rotation{};   // Rotation of sword texture
     if (rightLeft > 0.f)    // Facing Right
     {
         origin = {0.f, weapon.height * scale};
@@ -171,47 +208,47 @@ void Character::tick(float deltaTime)
             weapon.height * scale
         };
         // Slash Attack
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && getLastHit() > cooldown && getSwing() <= 0)
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && lastHit > cooldown && swing <= 0)    // Cooldown delay and not swinging sword
         {
-            lastMove = "Swing";
+            lastMove = "Swing"; // Setting attack to continue for multiple ticks
             rotation = 40.f;
-            setSwinging(true);
-            setSwing(cooldown/2);
+            swinging = true;
+            swing = cooldown/2; // Swing duration
         }
-        else if (getSwing() > 0 && lastMove == "Swing") // Swing duration
+        else if (swing > 0 && lastMove == "Swing") // Duration of swing (loop)
         {
             rotation = 40.f;
-            setSwinging(true);
-            setSwing(getSwing() - 1);
+            swinging = true;
+            swing--;    // Counting down swing time
         }
         // Stab Attack
-        else if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && getLastHit() > cooldown * 1.5 && getSwing() <= 0)
+        else if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && lastHit > cooldown * 1.5 && swing <= 0)    // Cooldown delay and not swinging sword
         {
-            lastMove = "Stab";
+            lastMove = "Stab";  // Setting attack to continue for multiple ticks
             rotation = 45.f;
-            offset = {45.f, 36.f};
-            setSwinging(true);
-            setSwing(cooldown);
+            offset = {45.f, 36.f};  // Stab attack has greater offset from player
+            swinging = true;
+            swing = cooldown;   // Swing duration
         }
-        else if (getSwing() >= cooldown * 0.7 && lastMove == "Stab") // Swing duration
-        {
-            rotation = 45.f;
-            offset = {45.f, 36.f};
-            setSwinging(true);
-            setSwing(getSwing() - 1);
-        }
-        else if (getSwing() < cooldown * 0.7 && getSwing() > 0 && lastMove == "Stab") // Swing duration
+        else if (swing >= cooldown * 0.7 && lastMove == "Stab") // Duration of swing (loop)
         {
             rotation = 45.f;
             offset = {45.f, 36.f};
-            setSwinging(false);
-            setSwing(getSwing() - 1);
+            swinging = true;
+            swing--;    // Counting down swing time
         }
-        else
+        else if (swing < cooldown * 0.7 && swing > 0 && lastMove == "Stab") // Swing duration after 30% cooldown time
+        {
+            rotation = 45.f;
+            offset = {45.f, 36.f};
+            swinging = false;   // Swing "ends" early so damage is not applied when not actively stabbing
+            swing--;
+        }
+        else    // Sword back at rest
         {
             rotation = 0.f;
             offset = {38.f, 55.f};;
-            setSwinging(false);
+            swinging = false;
         }
     }
     else    // Facing Left
@@ -227,54 +264,54 @@ void Character::tick(float deltaTime)
             weapon.height * scale
         };
         // Slash Attack
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && getLastHit() > cooldown && getSwing() <= 0)
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && lastHit > cooldown && swing <= 0)    // Cooldown delay and not swinging sword
         {
-            lastMove = "Swing";
+            lastMove = "Swing"; // Setting attack to continue for multiple ticks
             rotation = -40.f;
-            setSwinging(true);
-            setSwing(cooldown/2);
+            swinging = true;
+            swing = cooldown/2; // Swing duration
         }
-        else if (getSwing() > 0 && lastMove == "Swing") // Swing duration
+        else if (swing > 0 && lastMove == "Swing") // Duration of swing (loop)
         {
             rotation = -40.f;
-            setSwinging(true);
-            setSwing(getSwing() - 1);
+            swinging = true;
+            swing--;    // Counting down swing time
         }
         // Stab Attack
-        else if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && getLastHit() > cooldown * 1.5 && getSwing() <= 0)
+        else if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && lastHit > cooldown * 1.5 && swing <= 0)    // Cooldown delay and not swinging sword
         {
-            lastMove = "Stab";
+            lastMove = "Stab";  // Setting attack to continue for multiple ticks
             rotation = -45.f;
-            offset = {18.f, 36.f};
-            setSwinging(true);
-            setSwing(cooldown);
+            offset = {18.f, 36.f};  // Stab attack has greater offset from player
+            swinging = true;
+            swing = cooldown;   // Swing duration
         }
-        else if (getSwing() >= cooldown * 0.7 && lastMove == "Stab") // Swing duration
-        {
-            rotation = -45.f;
-            offset = {18.f, 36.f};
-            setSwinging(true);
-            setSwing(getSwing() - 1);
-        }
-        else if (getSwing() < cooldown * 0.7 && getSwing() > 0 && lastMove == "Stab") // Swing duration
+        else if (swing >= cooldown * 0.7 && lastMove == "Stab") // Duration of swing (loop)
         {
             rotation = -45.f;
             offset = {18.f, 36.f};
-            setSwinging(false);
-            setSwing(getSwing() - 1);
+            swinging = true;
+            swing--;    // Counting down swing time
         }
-        else
+        else if (swing < cooldown * 0.7 && swing > 0 && lastMove == "Stab") // Swing duration after 30% cooldown time
+        {
+            rotation = -45.f;
+            offset = {18.f, 36.f};
+            swinging = false;   // Swing "ends" early so damage is not applied when not actively stabbing
+            swing--;
+        }
+        else    // Sword back at rest
         {
             rotation = 0.f;
             offset = {25.f, 55.f};;
-            setSwinging(false);
+            swinging = false;
         }
     }
 
     // Drawing Sword
-    Rectangle source{0.f, 0.f, static_cast<float>(weapon.width) * rightLeft, static_cast<float>(weapon.height)};
-    Rectangle dest{getScreenPos().x + offset.x, getScreenPos().y + offset.y, weapon.width * scale, weapon.height * scale};
-    DrawTexturePro(weapon, source, dest, origin, rotation, WHITE);
+    Rectangle source{0.f, 0.f, static_cast<float>(weapon.width) * rightLeft, static_cast<float>(weapon.height)};    // Sword source texture
+    Rectangle dest{getScreenPos().x + offset.x, getScreenPos().y + offset.y, weapon.width * scale, weapon.height * scale};  // Sword destination rectangle
+    DrawTexturePro(weapon, source, dest, origin, rotation, WHITE);  // Draw sword
 
     // Sword Collision Box
     /*

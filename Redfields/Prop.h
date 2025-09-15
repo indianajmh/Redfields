@@ -22,9 +22,9 @@ public:
     Rectangle getInteractiveRec(Vector2 playerPos);
 private:
     // Prop Variables
-    Texture2D texture{};
-    Vector2 worldPos{};
-    float scale = 4.f;
+    Texture2D texture{};    // Prop texture
+    Vector2 worldPos{};     // Prop world position
+    float scale = 4.f;      // Prop texture scale
 };
 
 #endif

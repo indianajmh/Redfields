@@ -22,15 +22,15 @@ Prop::Prop(Vector2 pos, Texture2D tex) :
 // Rendering Props
 void Prop::Render(Vector2 playerPos)
 {
-    Vector2 screenPos = Vector2Subtract(worldPos, playerPos);
-    DrawTextureEx(texture, screenPos, 0.f, scale, WHITE);
+    Vector2 screenPos = Vector2Subtract(worldPos, playerPos);   // screen pos based on world pos player screen pos
+    DrawTextureEx(texture, screenPos, 0.f, scale, WHITE);       // draw texture
 }
 
 // Collision Rectangle for Props
 Rectangle Prop::getCollisionRec(Vector2 playerPos)
 {
-    Vector2 screenPos = Vector2Subtract(worldPos, playerPos);
-    return Rectangle
+    Vector2 screenPos = Vector2Subtract(worldPos, playerPos);   // screen pos
+    return Rectangle    // Rectangle
     {
         screenPos.x,
         screenPos.y,
@@ -43,8 +43,8 @@ Rectangle Prop::getCollisionRec(Vector2 playerPos)
 // Interactive Rectangle for Shops
 Rectangle Prop::getInteractiveRec(Vector2 playerPos)
 {
-    Vector2 screenPos = Vector2Subtract(worldPos, playerPos);
-    return Rectangle
+    Vector2 screenPos = Vector2Subtract(worldPos, playerPos);   // screen pos
+    return Rectangle    // Rectangle
     {
         screenPos.x - 35.f,
         screenPos.y - 15.f,
