@@ -6,7 +6,7 @@ https://www.raylib.com/
 Make sure to extract both RayLib and Redfields. 
 Raylib only needs to be somewhere on your computer for the game to use it.
 
-Launch "primary.exe" in the Redfields folder, which will launch the game.
+Launch "Redfields.exe" in the Redfields folder, which will launch the game.
 Please post any bugs or difficulties you experienced and I will do my best to solve them.
 
 ## How to Play
