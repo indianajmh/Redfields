@@ -60,7 +60,6 @@ public:
     void setLastHit(float ticks) {lastHit = ticks; };
     float getTexWidth() const {return texture.width; }
     float getTexHeight() const {return texture.height; }
-    Color getTint() const { return tint; }
     void setTint(Color cool) { tint = cool; }
     float getScale() const {return scale; }
     void setScale(float num) { scale = num; }
@@ -68,72 +67,75 @@ public:
     virtual void die() {alive = false;}
 protected:
     // Textures
-    Texture2D texture = LoadTexture("textures/characters/knight_idle_spritesheet.png");
-    Texture2D idle = LoadTexture("textures/characters/knight_idle_spritesheet.png");
-    Texture2D run = LoadTexture("textures/characters/knight_run_spritesheet.png");
-    Color tint = WHITE;
+    Texture2D texture = LoadTexture("textures/characters/knight_idle_spritesheet.png");     // Base texture
+    Texture2D idle = LoadTexture("textures/characters/knight_idle_spritesheet.png");        // Idle texture
+    Texture2D run = LoadTexture("textures/characters/knight_run_spritesheet.png");          // Run texture
+    Color tint = WHITE;     // tint
     
     // Variables for Scrolling
-    Vector2 worldPos{};
-    float worldXNewFrame{};
-    float worldXLastFrame{};
-    float worldYLastFrame{};
+    Vector2 worldPos{}; // Position in the world
+    float worldXNewFrame{}; // Next frame x position
+    float worldXLastFrame{};    // Last frame x position
+    float worldYLastFrame{};    // Last frame y position
 
     // Animation Variables
-    float rightLeft = 1.f; // 1 = facing right, -1 = facing left
-    float runningTime{};
-    int frame{};
-    int maxFrames{6};
-    float updateTime{1.f / 12.f};
-    Vector2 knockVector{};
-    float width{};
-    float height{};
-    float scale{4.0f};
-    Vector2 velocity{};
-    Vector2 lastVelocity{};
-    float knockback{};
-    float lastHit{};
+    float rightLeft = 1.f;          // 1 = facing right, -1 = facing left
+    float runningTime{};            // Animation tick
+    int frame{};                    // Animation frame
+    int maxFrames{6};               // Max animation frames
+    float updateTime{1.f / 12.f};   // Animation time
+    Vector2 knockVector{};          // Knockback vector
+    float width{};                  // Texture width
+    float height{};                 // Texture height
+    float scale{4.0f};              // Texture scaling
+    Vector2 velocity{};             // Movement velocity vector
+    Vector2 lastVelocity{};         // Previous movement velocity vector
+    float knockback{};              // Knockback effect
+    float lastHit{};                // When was last hit? for cooldown
 
     // Stats
-    float speed{};
-    float weight{};
-    float damage{};
-    float baseDamage{};
-    float force{};
-    float maxHealth{};
-    float health{};
-    float cooldown{};
-    float critMult{};
-    float critChance{};
+    float speed{};      // Movement speed
+    float weight{};     // Knockback resistance
+    float damage{};     // End damage
+    float baseDamage{}; // Damage before modifiers (after level up modifiers)
+    float force{};      // How much knockback you give
+    float maxHealth{};  // Max health
+    float health{};     // Current health
+    float cooldown{};   // Attack base cooldown
+    float critMult{};   // Critical hit multiplier
+    float critChance{}; // Critical hit chance
 
-    float baseSpeed{};
-    float baseWeight{};
-    float cleanDamage{};
-    float baseForce{};
-    float baseMaxHealth{};
-    float baseCooldown{};
-    float baseCritMult{};
-    float baseCritChance{};
+    // Equipment stat modifiers
+    float baseSpeed{};      // Base movement speed before level up modifiers
+    float baseWeight{};     // Base knockback resistance before level up modifiers
+    float cleanDamage{};    // Base damage before level up modifiers
+    float baseForce{};      // Base force before level up modifiers
+    float baseMaxHealth{};  // Base max health before level up modifiers
+    float baseCooldown{};   // Base attack cooldown before level up modifiers
+    float baseCritMult{};   // Base critical hit multiplier before level up modifiers
+    float baseCritChance{}; // Base critical hit chance before level up modifiers
 
-    float baseSpeedS{};
-    float baseWeightS{};
-    float cleanDamageS{};
-    float baseForceS{};
-    float baseMaxHealthS{};
-    float baseCooldownS{};
-    float baseCritMultS{};
-    float baseCritChanceS{};
+    // Stat modifiers from sword type
+    float baseSpeedS{};         // Base movement speed bonus from sword type
+    float baseWeightS{};        // Base knockback resistance bonus from sword type
+    float cleanDamageS{};       // Base damage from sword type
+    float baseForceS{};         // Base force from sword type
+    float baseMaxHealthS{};     // Base max health bonus from sword type
+    float baseCooldownS{};      // Base attack cooldown from sword type
+    float baseCritMultS{};      // Base critical hit multiplier from sword type
+    float baseCritChanceS{};    // Base critical hit chance bonus from sword type
 
-    float baseSpeedA{};
-    float baseWeightA{};
-    float cleanDamageA{};
-    float baseForceA{};
-    float baseMaxHealthA{};
-    float baseCooldownA{};
-    float baseCritMultA{};
-    float baseCritChanceA{};
+    // Stat modifiers from armor type
+    float baseSpeedA{};         // Base movement speed bonus from armor type
+    float baseWeightA{};        // Base knockback resistance bonus from armor type
+    float cleanDamageA{};       // Base damage from armor type
+    float baseForceA{};         // Base force from armor type
+    float baseMaxHealthA{};     // Base max health bonus from armor type
+    float baseCooldownA{};      // Base attack cooldown from armor type
+    float baseCritMultA{};      // Base critical hit multiplier from armor type
+    float baseCritChanceA{};    // Base critical hit chance bonus from armor type
 private:
-    // Alive
+    // If alive
     bool alive{true};
 };
 

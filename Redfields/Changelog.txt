@@ -1,6 +1,41 @@
+*Still in progress
+
+Redfields - v0.3.0.2
+
+- *checking map boundaries can be its own function
+- *checking prop collision can be its own function
+
 Redfields - v0.3.0.1
 
-- 
+- Renamed driver file to "Redfields.cpp".
+- Cleared clutter in code.
+- Shorted enemy death function code.
+- Shortened enemy movement code.
+- Changed level variable from float to int.
+- Outsourced player stats to separate functions.
+- Removed swing cooldown functions.
+- Removed useless accessor functions.
+- Moved the display of stats to player tick function.
+- Changed array of upgrades and upgrade textures to be vectors.
+- Changed gamemode variable from float to int.
+- Ensured variable frame time for ticks.
+- Changed loot value variable from float to double.
+- Added MANY more code comments so when I don't work on the project for a while I still know what certain code does.
+- Added wave 0 stats for starting game.
+- Fixed rfb#011: When restarting game after death, enemies drop their loot.
+- Set player to spawn in center of map when restarting instead of location of death. 
+- Fixed rfb#012: More enemies spawn in than should. This is due to the additive component of the gamemode modifier on enemy count.
+- Added functions to dynamically adjust memory of enemy vector to improve performance.
+- Comments for rusty sword were still labeled "basic sword."
+- Changed skill point variable from float to int.
+- Changed gold variable from float to int.
+- Fixed rfb#013: Buying a sword takes its cost in gold every tick while left click is held.
+- Changed max health modifiers from swords/armor to be floats.
+- Fixed rfb#014: Instakill infinite damage gets overridden and as a result, damage remains normal.
+- Changed priority of stats changing when leveling up for synchronization.
+- Fixed rfb#015: Leveling up does not fully give back max health.
+- Fixed rfb#016: Enemies deal damage twice.
+- Fixed rfb#017: Damage indicators do not show up.
 
 Redfields - v0.3.0.0
 
@@ -25,7 +60,7 @@ Redfields - v0.3.0.0
 - Integrated force variable to each enemy type.
 - Made force affected by game difficulty.
 - Improved knockback vectors.
-- Fixed cc#002: Knockback only affects player when the player is moving.
+- Fixed rfb#002: Knockback only affects player when the player is moving.
 - Added longer cooldown to stab attacks (1.5x).
 - Added name displays to all enemy types.
 - Adjusted enemy name displays based on character count.
@@ -40,11 +75,11 @@ Redfields - v0.3.0.0
 - Added upgrade gui textures and implimentation.
 - Added stats for upgrades when hovering over them.
 - Improved code for upgrades and gui.
-- Fixed cc#004: Player has no damage or cooldown.
-- Fixed cc#005: Game crashes when opening store from retrieving player data.
-- Fixed cc#006: Game crashes when opening store from unknown upgrades.
-- Fixed cc#007: Game will not start due to upgrade constructor.
-- Fixed cc#008: Player health resets to max when damaged.
+- Fixed rfb#004: Player has no damage or cooldown.
+- Fixed rfb#005: Game crashes when opening store from retrieving player data.
+- Fixed rfb#006: Game crashes when opening store from unknown upgrades.
+- Fixed rfb#007: Game will not start due to upgrade constructor.
+- Fixed rfb#008: Player health resets to max when damaged.
 - Added purchasability to upgrades.
 - Added stats with new gilded sword.
 - Implemented gilded sword texture.
@@ -53,5 +88,5 @@ Redfields - v0.3.0.0
 - Added iron and steel swords.
 - Gilded sword is now sword 4.
 - Coin drop chance multiplier increased from 50 to 60.
-- Fixed cc#009: Purchasing upgrade subtracts more gold than what you have.
+- Fixed rfb#009: Purchasing upgrade subtracts more gold than what you have.
 - Added skill points as new currency for skills.

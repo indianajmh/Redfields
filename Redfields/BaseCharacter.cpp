@@ -16,19 +16,19 @@ BaseCharacter::BaseCharacter()
 // Redo X Movement for Collision
 void BaseCharacter::redoMovementX()
 {
-    worldPos.x = worldXNewFrame;
+    worldPos.x = worldXNewFrame;    // Set current x position to next frame's x position
 }
 
 // Undo X Movement for Collision
 void BaseCharacter::undoMovementX()
 {
-    worldPos.x = worldXLastFrame;
+    worldPos.x = worldXLastFrame;   // Set current x position to previous frame's x position
 }
 
 // Undo Y Movement for Collision
 void BaseCharacter::undoMovementY()
 {
-    worldPos.y = worldYLastFrame;
+    worldPos.y = worldYLastFrame;   // Set current y position to previous frame's y position
 }
 
 // Collision Rectangle for Character
@@ -36,17 +36,17 @@ Rectangle BaseCharacter::getCollisionRec()
 {
     return Rectangle
     {
-        getScreenPos().x,
-        getScreenPos().y,
-        width * scale,
-        height * scale
+        getScreenPos().x,   // X
+        getScreenPos().y,   // Y
+        width * scale,      // Width
+        height * scale      // Height
     };
 }
 
 // Ticks as in passing of time (like minecraft) 
 void BaseCharacter::tick(float deltaTime)
 {
-    // Max Health
+    // Max Health Limit
     if (health > maxHealth) {health = maxHealth; }
 
     // Saving Last Locational Frame
@@ -54,46 +54,47 @@ void BaseCharacter::tick(float deltaTime)
     worldYLastFrame = worldPos.y;
 
     // Updating Animation Frame
-    runningTime += deltaTime;
-    if (runningTime >= updateTime)
+    runningTime += deltaTime;   // Updating animation tick
+    if (runningTime >= updateTime)  // Switching animation frame
     {
-        frame++;
-        runningTime = 0.f;
-        if (frame > maxFrames)
+        frame++;    // Animation frame
+        runningTime = 0.f;  // Animation tick
+        if (frame > maxFrames)  // Replay animation chain
             frame = 0;
     }
 
     // Applying Direction
-    if (Vector2Length(velocity) != 0.0 || knockback > 0)
+    if (Vector2Length(velocity) != 0.0 || knockback > 0)    // If motion should occur
     {
         // Saving last velocity vector
         lastVelocity = velocity;
 
-        // set worldPos = worldPos + direction
-        worldPos = Vector2Subtract(Vector2Subtract(worldPos, Vector2Scale(Vector2Normalize(lastVelocity), speed)), Vector2Scale(Vector2Normalize(knockVector), knockback));
-        if (velocity.x < 0.f)
-            rightLeft = 1.f;
-        if (velocity.x > 0.f)
-            rightLeft = -1.f;
+        // set worldPos = worldPos + direction - knockback
+        worldPos = Vector2Subtract(Vector2Subtract(worldPos, Vector2Scale(Vector2Normalize(lastVelocity), speed)), 
+                Vector2Scale(Vector2Normalize(knockVector), knockback));
+        if (velocity.x < 0.f)   // if negative x velocity
+            rightLeft = 1.f;    // facing right
+        if (velocity.x > 0.f)   // if positive x velocity
+            rightLeft = -1.f;   // facing left
         texture = run;
     }
     else
     {
-        texture = idle;
+        texture = idle;     // Not moving, idle texture
     }
-    velocity = {};
+    velocity = {};  // Set velocity to zero
 
     // Knockback Effect
-    if (knockback > 0)
+    if (knockback > 0)  // If knockback present
     {
-        knockback -= 0.5 * speed;
-        if (knockback < 0) knockback = 0;
+        knockback -= 0.5 * speed;   // Knockback recovery
+        if (knockback < 0) knockback = 0;   // Cap min at zero
     }
 
     // Drawing Character
-    Rectangle source{frame * width, 0.f, rightLeft * width, height};
-    Rectangle dest{getScreenPos().x, getScreenPos().y, scale * width, scale * height};
-    DrawTexturePro(texture, source, dest, Vector2{}, 0.f, tint);
+    Rectangle source{frame * width, 0.f, rightLeft * width, height};    // Character source texture
+    Rectangle dest{getScreenPos().x, getScreenPos().y, scale * width, scale * height};  // Character destination rectangle
+    DrawTexturePro(texture, source, dest, Vector2{}, 0.f, tint);    // Draw character
 
 }
 
@@ -106,9 +107,9 @@ void BaseCharacter::giveDamage(float damage)
 // Receiving Damage
 void BaseCharacter::takeDamage(float damage)
 {
-    health -= damage;
-    if (health <= 0.f && alive)
+    health -= damage;   // Applying damage
+    if (health <= 0.f && alive) // If alive and should die
     {
-        die();
+        die();  // Die
     }
 }

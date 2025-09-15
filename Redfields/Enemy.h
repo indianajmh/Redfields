@@ -37,16 +37,16 @@ public:
     void setAgro(bool angry) { agro = angry; }
     virtual void die() override;
 private:
-    Character* target;
+    Character* target;      // Enemy targets a character (player)
 
     // Stats
-    float delay{15.f};
-    float reach{};
-    float range{};
-    bool agro{false};
-    bool dropped{false};
-    bool spawned{false};
-    string tag{};
+    float delay{15.f};      // Delay in ticks when in contact with player before attacking
+    float reach{};          // Range in which to attack player
+    float range{};          // Range in which to see player and chase
+    bool agro{false};       // When enemy is actively attacking player
+    bool dropped{false};    // Loot has been dropped by the enemy
+    bool spawned{false};    // Enemy has spawned in
+    string tag{};           // The type of enemy
 };
 
 #endif
